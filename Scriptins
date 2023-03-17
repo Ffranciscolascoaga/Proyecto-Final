@@ -1,0 +1,115 @@
+Use empresa_de_limpieza;
+
+insert into Clientes Values
+("1","4188786","Francisco","Almeyda","Franalmeyda@gmail.com","2314543267","Almafuerte 21","Somos Mas","Efectivo"),
+("2","4388323","Jesus","Suarez","vitalicia@gmail.com","2314435678","boer 12","Vitalicia","Efectivo"),
+("3","4112345","Tomas","Benito","tomasok@gmail.com","2314123456","Olascoaga 12","Encuentro","Efectivo"),
+("4","4183452","Franco","Alesandrelli","Francoaa@gmail.com","2314987654","San Martin 21","Mantenerse hoy","Efectivo"),
+("5","3184386","Nicolas","Gauna","Nicoaaa@gmail.com","2314231456","Almirante 12","Limpios","Efectivo");
+
+Select * from Clientes;
+SElect * from Proveedores;
+Insert into Proveedores Values 
+("1","MARQUEZ SRL","San carlos de bolivar","6550","2314232456","marquez@gmail.com","Almirante 431","1300"),
+("2","Abermate","San carlos de bolivar","6550","231412121","Abermate@gmail.com","San martin 11","5000"),
+("3","Lemos srl","San carlos de bolivar","6550","2314686844","mlemosok@gmail.com","Boer 123","7000"),
+("4","Tortugas","Pehuajo","6450","2314123456","tortugas12@gmail.com","solidaridad 124","18000"),
+("5","seigame","Pehuajo","6450","2314981276","Seigame@gmail.com","Avellaneda 56","3500");
+
+
+Select * from Empleados;
+
+Insert into Empleados Values
+("1","41999083","Cristian","Busquet","M","soltero","2020-12-12","1980-08-10","2314552314","cristianbusquet@gmail.com","almafuerte 123"),
+("2","20888765","Santiago","Sosa","M","soltero","2020-12-12","1988-10-10","2314552314","santisosa@gmail.com","boer 1234"),
+("3","31456789","Mercedes","urrutia","F","casada","2020-12-12","1990-12-12","2350324500","meruruu@gmail.com","chiclana 50"),
+("4","45987654","Catalina","Rodriguez","F","soltera","2020-12-12","2000-03-01","2314678912","cataro@gmail.com","paso 124"),
+("5","30456235","Nicolas","Ochiato","M","soltero","2020-12-12","1999-10-12","2350657834","nicoochiato@gmail.com","alcorta 654");
+
+Select * from empresa;
+
+Insert into empresa Values
+("1","SOMOS MAS","2022-12-12","2314543267","Franalmeyda@gmail.com","Almafuerte 21"),
+("2","Vitalicia","2022-12-12","2314435678","vitalicia@gmail.com","boer 12"),
+("3","Encuentro","2022-12-12","2314123456","tomasok@gmail.com","Olascoaga 12"),
+("4","Mantenerse hoy","2022-12-12","2314987654","Francoaa@gmail.com","San Martin 21"),
+("5","Limpios","2022-12-12","2314231456","Nicoaaa@gmail.com","Almirante 12");
+
+
+SELECT * FROM productos;
+insert into productos values 
+("1","1","Jabon de piso","1200"),
+("2","1","Desinfectante","13000"),
+("3","2","Escobas","15000"),
+("5","2","Trapopisos","20000");
+
+select * from facturas;
+
+insert into facturas values 
+("1","MARQUEZ SRL","Somos Mas"),
+("2","MARQUEZ SRL","Somos Mas"),
+("3","Abermate","Vitalicia"),
+("4","Abermate","Vitalicia"),
+("5","Trotugas","Limpios");
+
+select * from datos;
+
+insert into datos values 
+("2314543412","asas@gmail.com","Boluvar 122"),
+("2314552828","olviaadss@gmail.com","Ascuenaga 54"),
+("2314552891","Franisco11@gmail.com","almafuerte 111"),
+("2314513986","cristianolas@gmail.com","almafuerte 895"),
+("2314556785","bautistaasz@gmail.com","Boer 653");
+
+
+select * from antiguedad;
+insert into antiguedad values
+("1","1 año"),
+("2","1 año"),
+("3","1 año"),
+("4","1 año"),
+("5","1 año");
+
+select * from formade_pago;
+
+insert into formade_pago values 
+("NO","NO","NO","SI"),
+("NO","NO","NO","SI"),
+("NO","NO","NO","SI"),
+("NO","NO","NO","SI"),
+("NO","NO","NO","SI");
+
+SELECT * FROM equipacion;
+
+insert into equipacion values 
+("camioneta de transporte","4","SI","X","NO"),
+("camioneta uso diario","3","X","SI","SI"),
+("maquina limpia pisos","1","SI","X","SI"),
+("hidrolavadora","5","SI","X","SI"),
+("camioneta de transporte","4","SI","X","NO");
+
+select * from contrato;
+insert into contrato values 
+("1","1"),
+("2","2"),
+("3","4"),
+("4","5"),
+("5","3");
+
+
+insert into servicio values
+("SI","NO","NO","NO"),
+("NO","NO","SI","NO"),
+("NO","NO","NO","SI"),
+("NO","SI","NO","NO"),
+("SI","NO","NO","NO");
+SELECT * FROM servicio;
+
+
+select * from Seguros;
+insert into Seguros values 
+("1","1","Francisco Almeyda","SEGUROS SRL"),
+("2","2","Jesus Suarez","SEGUROS SRL"),
+("3","3","Tomas Benito","SEGUROS SRL"),
+("4","4","Franco Alessandreli","SEGUROS SRL"),
+("5","5","Nicolas Gauna","SEGUROS SRL");
