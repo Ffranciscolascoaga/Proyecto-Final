@@ -1,0 +1,342 @@
+#Creamos la DB para la Empresa de Limpieza
+
+Create DATABASE if not exists Empresa_de_limpieza;
+
+Use Empresa_de_Limpieza;
+
+#Creacion de TABLAS#
+Drop Table if exists `Clientes`;
+
+CREATE TABLE IF NOT EXISTS `Clientes` (
+    id_Cliente INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY ,
+    dni_Cliente VARCHAR(8) NOT NULL,
+    nombres VARCHAR(50) NOT NULL,
+    apellidos VARCHAR(50) NOT NULL,
+    Correo varchar(50), 
+    telefono VARCHAR(15),
+    direccion VARCHAR(100) NOT NULL,
+    Empresa varchar(50) not null,
+    Metodo_pago varchar(18));
+
+select * from Clientes;
+
+Drop table if exists `Proveedores`;
+
+	CREATE TABLE IF NOT EXISTS `proveedores` (
+    id_proveedor INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    nombres VARCHAR(50) NOT NULL,
+    localidad VARCHAR(50) NOT NULL,
+    estado_civil VARCHAR(15),
+    telefono VARCHAR(15),
+    correo VARCHAR(50),
+    direccion VARCHAR(100) NOT NULL,
+    costo numeric (10,2)
+);
+    select * from Proveedores;
+    
+    Drop table if exists `Empleados`
+    
+CREATE TABLE IF NOT EXISTS `Empleados` (
+    id_Empleado INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    dni_Empleado VARCHAR(8) NOT NULL,
+    nombres VARCHAR(50) NOT NULL,
+    apellidos VARCHAR(50) NOT NULL,
+    genero CHAR(1),
+    estado_civil VARCHAR(15),
+    fecha_ingreso DATE NOT NULL,
+    fecha_nac date not null,
+    telefono VARCHAR(15),
+    correo VARCHAR(50),
+    direccion VARCHAR(100) NOT NULL
+);
+    
+    select * from Empleados;
+    
+    
+    Drop table if exists `Empresa`
+    
+CREATE TABLE IF NOT EXISTS `Empresa` (
+    id_empresa INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    fecha_contratacion DATE NOT NULL,
+    telefono VARCHAR(15),
+    correo VARCHAR(50),
+    direccion VARCHAR(100) NOT NULL
+);
+  select * from Empresa;
+  
+   drop table if exists  `productos`
+    CREATE TABLE IF NOT EXISTS `productos` (
+    id_producto INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    Proveedor int,
+    nombres_producto VARCHAR(50) NOT NULL,
+    precio numeric(10,2)
+);
+   select * from productos;
+   
+      drop table if exists  `facturas`
+    CREATE TABLE IF NOT EXISTS `facturas` (
+    id_Facturas INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    id_Proveedor VARCHAR(50) NOT NULL,
+    clientes varchar(50)
+);
+   select * from facturas;
+   
+   
+      drop table if exists  `recibo_sueldo`;
+    CREATE TABLE IF NOT EXISTS `recibo_sueldo` (
+    id_Recibo_Sueldo INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+    id_Empleado VARCHAR(50) NOT NULL);
+    
+    select * from recibo_sueldo;
+
+drop table if exists `datos`;
+CREATE TABLE IF NOT EXISTS `datos` (
+    telefono VARCHAR(15),
+    correo VARCHAR(50),
+    direccion VARCHAR(100) NOT NULL
+);
+
+select * from datos;
+    
+     drop table if exists  `Antiguedad`;
+    CREATE TABLE IF NOT EXISTS `Antiguedad` (
+    id_Empleado INT NOT NULL UNIQUE AUTO_INCREMENT,
+   Antiguedad  VARCHAR(50) NOT NULL);
+      
+      select * from Antiguedad;
+ 
+ drop table if exists `servicio`;
+    CREATE TABLE IF NOT EXISTS `servicio` (
+    Consorcio VARCHAR(50),
+    Oficina VARCHAR(50),
+    fin_de_obra VARCHAR(50),
+    casa VARCHAR(50));
+    
+    select * from servicio;
+    
+      Drop table if exists `FormaDe_Pago`;
+    
+Create Table if not Exists `FormaDe_Pago` (
+    Mercado_Pago varchar(2),
+    Cuenta_DNI varchar(2), 
+    Transferencia_bancaria  varchar(2), 
+    Efectivo  varchar(2)
+    );
+    select * from formaDe_pago;
+    
+      Drop table if exists  `Movimientos`;
+    
+    Create Table if not Exists `Movimientos` (
+    Movimientos varchar(100) not null);
+    
+    select * from Movimientos;
+    
+      Drop table if exists `Seguros`;
+    
+    Create Table if not Exists `Seguros` (
+    ID_Seguros varchar (50) not null primary key, 
+    Empleado int not null, 
+    clientes Varchar (50) not null, 
+    Aseguradora varchar (50) not null
+    );
+    
+    select * from Seguros;
+    
+      Drop table if exists `Equipacion`;
+    
+    Create Table if not Exists Equipacion (
+    Equipacion varchar (50) not null ,
+   ID_Proveedores int not null,
+   Maquinas varchar (100),
+   Camionetas varchar (100),
+   Existencias varchar (50),
+   foreign key (ID_Proveedores) references Proveedores (id_proveedor));
+    select * from equipacion;
+    
+      Drop table if exists  `Contrato`;
+    
+    Create Table if not Exists  `Contrato` (
+    ID_Contrato varchar (100) not null unique primary key, 
+    id_Clientes int not null
+    );
+    
+    select * from Contrato;
+    
+    
+                                            -- Creacion de Triggers--
+
+-- Primero se crea una tabla "datos_2" 
+drop table datos_2;
+create table datos_2 (celular varchar (20), mail varchar (100), direccion varchar (50), usuario varchar (50), fecha_registro datetime);
+
+#se crea un trigger AFTER para que cada vez que se registre los datos de los clientes se registren tambien en la tabla "datos_2"
+
+drop trigger Clientes_Extra;
+Create trigger Clientes_Extra after insert on clientes for each row insert into datos_2 (celular, mail, direccion, usuario, fecha_registro)
+ values  (new.telefono, new.correo, new.direccion, current_user(),now())
+ 
+
+select * from productos;
+
+-- se crea una tabla para los precios actuliazados de los productos
+drop table productos_actualizados;
+create table productos_actualizados ( precio_anterior int, precio_nuevo int, fecha_registro datetime, proveedor varchar (100), nombre_producto varchar (100));
+select * from productos_actualizados;
+
+-- se crea un Trigger para que se actualicen los precios nuevos acorde a los anteriores 
+
+create trigger precios_actualizados before update on productos
+for each row insert into productos_actualizados (precio_anterior, precio_nuevo, fecha_registro, proveedor, nombre_producto)
+values (old.precio_anterior, now.precio_nuevo, now.fecha_registro, now.proveedor, now.nombre_producto, current_user(), now());
+
+
+                                            -- Creacion de FUNCIONES --
+
+use empresa_de_limpieza;
+
+
+    drop function saludar;
+    DELIMITER //
+CREATE FUNCTION saludar(nombres VARCHAR(50), apellidos VARCHAR(50), correo VARCHAR(100)) RETURNS VARCHAR(150)
+deterministic
+  BEGIN
+    DECLARE nombre_completo VARCHAR(100);
+    SET nombre_completo = CONCAT(nombres, " ", apellidos);
+    IF correo IS NOT NULL THEN
+      RETURN CONCAT("Bienvenido"," ", nombre_completo);
+    ELSE
+      RETURN "Aun no tenes Email";
+    END IF;
+  END//
+  
+SELECT id_Empleado, nombres, apellidos, correo, saludar(nombres, apellidos, correo) AS 'Saludo' FROM empleados;
+
+
+DROP FUNCTION IF EXISTS iva;
+DELIMITER //
+CREATE FUNCTION iva (iva int) returns decimal (10,2)
+  NO SQL
+  deterministic
+  BEGIN
+DECLARE precio_iva decimal (10,2);
+
+  SET precio_iva = (select precio *((iva/100) + 1) from productos limit 1);
+  
+RETURN precio_iva;
+END
+//;
+
+select *, iva(21) as "PreciosConIva" FROM productos;
+
+
+                                   -- Creacion de VISTAS--
+				   
+
+use empresa_de_limpieza;
+
+select * from clientes;
+
+create view Clientes_Actuales as
+select id_Cliente,dni_Cliente,nombres,apellidos,Correo,telefono,direccion from clientes;
+
+select * from empleados;
+
+create view Empleados_Actuales as
+select dni_Empleado,nombres,apellidos,fecha_ingreso,telefono from empleados;
+
+select * from proveedores;
+
+create view Proveedores_2023 as
+select nombres,localidad,telefono,correo from proveedores;
+
+select * from datos;
+create view Datos_Actuales as
+select telefono,correo,direccion from datos;
+
+select * from productos;
+create view Productos_2023 as
+select id_producto,nombres_producto,precio from productos;
+
+                            -- Creacion de STORE PROCEDURE --
+			    
+			    -- Procedimiento almacenado para mostrar Clientes actuales
+USE `empresa_de_limpieza`;
+DROP procedure IF EXISTS `sp_MostrarClientes`;
+
+DELIMITER $$
+USE `empresa_de_limpieza`$$
+CREATE PROCEDURE `sp_MostrarClientes` ()
+BEGIN
+     select * from clientes;
+END$$
+
+DELIMITER ;
+call sp_MostrarClientes();
+
+-- Procedimiento almacenado para registrar nuevos clientes
+
+USE `empresa_de_limpieza`;
+DROP procedure IF EXISTS `sp_Clientes_Nuevos`;
+
+USE `empresa_de_limpieza`;
+DROP procedure IF EXISTS `empresa_de_limpieza`.`sp_Clientes_Nuevos`;
+;
+
+DELIMITER $$
+USE `empresa_de_limpieza`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_Clientes_Nuevos`( in DNI int,
+                                       in nombre varchar (50),
+                                      in apellido varchar (50),
+                                      in email varchar (100),
+                                      in tel int,
+                                      in direc varchar (100),
+                                      in EmpresaP varchar (100),
+                                      in Pago_Con varchar (50))
+BEGIN
+     insert into clientes (dni_Cliente, nombres, apellidos, Correo, telefono, direccion, Empresa, Metodo_Pago) values (DNI,nombre,apellido, email,tel, direc, EmpresaP, Pago_con);
+END$$
+
+DELIMITER ;
+;
+
+call sp_Clientes_Nuevos(43555678,"Julio","Roca","Julioroca123@gmail.com",221456789,"Azcuenaga 1230","INSUMOS ALCORTA","Efectivo");
+
+call sp_MostrarClientes();
+
+select * from clientes;
+
+
+
+
+                                          -- Creacion de Sentencias --
+					  
+					  use empresa_de_limpieza;
+ 
+ -- Se crean dos usuarios, Localhost y Empresa_interesada
+ create user "Franciscolocalhost" identified by "ALL123";
+  show grants for "Franciscolocalhost";
+  DROP USER "Localhost";
+ rename user "Franciscolocalhost" to "Localhost";
+ grant show view, select,insert, update on *.* to "Localhost";
+ 
+  -- permisos de lectura, insercion y modificacion de datos
+ grant show view, insert, update on *.* to "Localhost";
+ 
+ revoke show view,select, insert, update on *.* from "localhost";
+ 
+ show grants for "Localhost";
+ 
+ -- empresa interesada, es la que esta por comprar la empresa de limpieza
+
+drop user  "Empresa_interesada";
+ create user "Empresa_interesada" identified by "ALL123";
+ 
+ 
+ 
+ -- 
+ show grants on  "Empresa_interesada";
+ # Empresa_interesada solo podra hacer lectura de todos los datos en las tablas
+ grant select on *.* to  "Empresa_interesada";
+ 
+ show grants for "Empresa_interesada";
